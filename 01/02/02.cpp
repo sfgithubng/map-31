@@ -69,7 +69,7 @@ int32_t main() {
     std::cout << "CPU cores and hyper-threads available: " << cpuCoreCount << std::endl;
 
     std::vector<std::vector<int32_t>> vectorsToSum{};
-    std::vector<int32_t> vectorLengths {1000, 10000, 100000, 1000000, 10000000};
+    std::vector<int32_t> vectorLengths {1000, 10000, 100000, 1000000};
     std::cout << std::format(columnHeaderOutputFormat, "Threads \\ Vector lengts");
     for (const auto vectorLength : vectorLengths) {
         std::cout << "|" << std::format(columnHeaderOutputFormat, vectorLength);
@@ -94,4 +94,5 @@ int32_t main() {
         std::cout << std::endl;
     }
 
+    return EXIT_SUCCESS;
 }
