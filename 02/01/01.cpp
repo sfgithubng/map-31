@@ -32,7 +32,7 @@ void addClientsToTheQueue(int32_t maxClientAmount) {
     auto queueAdditionTimer = std::chrono::seconds(1);
     for (int32_t client = 0;  client < maxClientAmount; client++) {
         std::this_thread::sleep_for(queueAdditionTimer);
-        currentClientAmount.store(++currentClientAmount);
+        currentClientAmount.store(++currentClientAmount, std::memory_order_seq_cst);
         std::cout << "Added client to the queue. Current queue length: " << currentClientAmount.load() << std::endl;
     }
     allClientsAdded = true;
@@ -60,7 +60,7 @@ void serveClientsInTheQueue() {
             std::cout << "Processed all clients in the queue" << std::endl;
             break;
         }
-        currentClientAmount.store(--currentClientAmount);
+        currentClientAmount.store(--currentClientAmount, std::memory_order_seq_cst);
         std::cout << "Processed client in the queue. Current queue length: " << currentClientAmount.load() << std::endl;
     }
 }
