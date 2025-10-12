@@ -56,6 +56,7 @@ void displayProgress(std::vector<threadSpec>* runningThreads) {
         std::this_thread::sleep_for(sleepTime);
         std::cout << clearScreenStringSeq;
         allThreadsDone = true;
+        std::lock_guard<std::mutex> lockObj(mutexObj);
         for (const auto& runningThread : (*runningThreads)) {
             if (runningThread.threadProgress != completedProgress) {
                 allThreadsDone = false;
