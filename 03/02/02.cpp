@@ -12,8 +12,18 @@ void async_for_each(ForwardIt startIterator,
     ForwardIt endIterator,
     UnaryFunc handlerFunc) {
 
-    for (auto containerIterator = startIterator; containerIterator != endIterator; containerIterator++) {
-        auto asyncRun = std::async(std::launch::async, handlerFunc, std::ref(*containerIterator));
+    auto containerSize = std::distance(endIterator, startIterator);
+
+    if (containerSize < 10) {
+        for (auto containerIterator = startIterator; containerIterator != endIterator; ++containerIterator) {
+            auto asyncRun = std::async(std::launch::async, handlerFunc, std::ref(*containerIterator));
+        }
+    } else {
+        auto middleIterator = startIterator;
+        std::advance(middleIterator, containerSize / 2);
+        auto asyncRunResult = std::async(async_for_each<ForwardIt, UnaryFunc>, startIterator, middleIterator, handlerFunc);
+        auto asyncRunFirst = std::async(async_for_each<ForwardIt, UnaryFunc>, startIterator, middleIterator, handlerFunc);
+        auto asyncRunSecond = std::async(async_for_each<ForwardIt, UnaryFunc>, middleIterator + 1, endIterator, handlerFunc);
     }
 }
 
